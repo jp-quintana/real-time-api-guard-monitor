@@ -1,6 +1,6 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
-import { REDIS_CLIENT } from './redis/redis.module';
+import { REDIS_CLIENT } from './modules/redis/redis.module';
 import Redis from 'ioredis';
 
 @Controller()

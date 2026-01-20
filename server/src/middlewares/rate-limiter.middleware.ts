@@ -1,9 +1,8 @@
 import { Inject, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import Redis from 'ioredis';
+import { RedisKeys } from 'src/config/redis.config';
 import { REDIS_CLIENT } from 'src/modules/redis/redis.module';
-
-export const RATE_LIMIT_KEY_PREFIX = 'rate:ip:';
 
 @Injectable()
 export class RateLimiterMiddleware implements NestMiddleware {
@@ -13,7 +12,7 @@ export class RateLimiterMiddleware implements NestMiddleware {
     const rawIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ip = rawIp === '::1' ? '127.0.0.1' : rawIp;
 
-    const key = RATE_LIMIT_KEY_PREFIX + ip;
+    const key = RedisKeys.RATE_LIMIT_KEY_PREFIX + ip;
 
     const results = await this.redis
       .multi()

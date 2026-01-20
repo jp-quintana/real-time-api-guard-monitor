@@ -15,10 +15,15 @@ export class RecentActivityMiddleware implements NestMiddleware {
       path: req.path,
     };
 
-    await this.redis.lpush(RECENT_ACTIVITY_KEY_PREFIX, JSON.stringify(payload));
-
-    // const test = await this.redis.get(RECENT_ACTIVITY_KEY_PREFIX);
-    // console.log({ test });
+    try {
+      this.redis
+        .pipeline()
+        .lpush(RECENT_ACTIVITY_KEY_PREFIX, JSON.stringify(payload))
+        .ltrim(RECENT_ACTIVITY_KEY_PREFIX, 0, 49)
+        .exec();
+    } catch (error) {
+      console.error('Failed to log recent activity:', error);
+    }
 
     next();
   }

@@ -13,7 +13,8 @@ export class RecentActivityMiddleware implements NestMiddleware {
   async use(req: Request, _res: Response, next: NextFunction) {
     const payload: RecentActivity = {
       timestamp: Date.now(),
-      path: req.path,
+      endpoint: req.originalUrl || req.path,
+      method: req.method,
     };
 
     this.redis

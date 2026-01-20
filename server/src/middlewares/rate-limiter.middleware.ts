@@ -15,14 +15,22 @@ export class RateLimiterMiddleware implements NestMiddleware {
 
     const key = RATE_LIMIT_KEY_PREFIX + ip;
 
-    const curr = await this.redis.incr(key);
+    const results = await this.redis
+      .multi()
+      .incr(key)
+      .expire(key, 60, 'NX')
+      .exec();
 
-    if (curr === 1) {
-      await this.redis.expire(key, 60);
-    } else if (curr > 10) {
+    if (results === null) {
+      return res.status(500).send('Internal server error');
+    }
+
+    const curr = results[0][1] as number;
+
+    if (curr > 10) {
       return res
         .status(429)
-        .send('Max amount of request per ip address per minute is 10 ');
+        .send('Max amount of request per ip address per minute is 10');
     }
     next();
   }

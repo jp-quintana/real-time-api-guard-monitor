@@ -9,6 +9,19 @@ services:
   #       - redis-server
   #   environment:
   #     - REDIS_URL=redis://redis-server:6379
+
+  db:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   redis-server:
     image: redis:7.4-alpine
     container_name: redis-server
@@ -25,3 +38,4 @@ services:
 
 volumes:
   redis_data:
+  postgres_data:

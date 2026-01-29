@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { RedisModule } from './modules/redis/redis.module';
 import { RateLimiterMiddleware, RecentActivityMiddleware } from './middlewares';
 import { LogsModule } from './modules/logs/logs.module';
+import { DatabaseModule } from './modules/database/database.module';
 
 @Module({
-  imports: [RedisModule, LogsModule],
+  imports: [RedisModule, LogsModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

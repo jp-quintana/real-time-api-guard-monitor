@@ -5,9 +5,15 @@ import { RedisModule } from './modules/redis/redis.module';
 import { RateLimiterMiddleware, RecentActivityMiddleware } from './middlewares';
 import { LogsModule } from './modules/logs/logs.module';
 import { DatabaseModule } from './modules/database/database.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [RedisModule, LogsModule, DatabaseModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    RedisModule,
+    LogsModule,
+    DatabaseModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

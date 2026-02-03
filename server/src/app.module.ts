@@ -6,6 +6,7 @@ import { RateLimiterMiddleware, RecentActivityMiddleware } from './middlewares';
 import { LogsModule } from './modules/logs/logs.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     RedisModule,
     LogsModule,
     DatabaseModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
